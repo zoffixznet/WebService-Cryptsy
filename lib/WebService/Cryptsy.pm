@@ -11,38 +11,202 @@ use constant API_URL => 'https://www.cryptsy.com/api';
 
 has pub_key => ( is => 'ro', required => 1 );
 has priv_key => ( is => 'ro', required => 1 );
+has error    => ( is => 'rw', );
 
-sub _nonce {
+sub marketdata {
     my $self = shift;
-    return ++$self->{ZOF_NONCE};
+    return $self->_decode( $self->_api_query('marketdata') );
+}
+
+sub marketdatav2 {
+    my $self = shift;
+    return $self->_decode( $self->_api_query('marketdatav2') );
+}
+
+sub singlemarketdata {
+    my ( $self, $market_id ) = @_;
+    return $self->_decode( $self->_api_query(
+        'singlemarketdata', marketid => $market_id,
+    ));
+}
+
+sub orderdata {
+    my $self = shift;
+    return $self->_decode( $self->_api_query('orderdata') );
+}
+
+sub singleorderdata {
+    my ( $self, $market_id ) = @_;
+    return $self->_decode( $self->_api_query(
+        'singleorderdata', marketid => $market_id,
+    ));
 }
 
 sub getinfo {
     my $self = shift;
-
-    return $self->api_query('getinfo');
+    return $self->_decode( $self->_api_query('getinfo') );
 }
 
-sub api_query {
-    my ( $self, $method, %req ) = @_;
+sub getmarkets {
+    my $self = shift;
+    return $self->_decode( $self->_api_query('getmarkets') );
+}
 
-    $req{method} = $method;
-    $req{nonce}  = $self->_nonce;
-    my @data;
-    for ( keys %req ) {
-        push @data, $_ . '=' . $req{$_};
+sub mytransactions {
+    my $self = shift;
+    return $self->_decode( $self->_api_query('mytransactions') );
+}
+
+sub markettrades {
+    my ( $self, $market_id ) = @_;
+    return $self->_decode( $self->_api_query(
+        'markettrades', marketid => $market_id,
+    ));
+}
+
+sub marketorders {
+    my ( $self, $market_id ) = @_;
+    return $self->_decode( $self->_api_query(
+        'marketorders', marketid => $market_id,
+    ));
+}
+
+sub mytrades {
+    my ( $self, $market_id, $limit ) = @_;
+    $limit ||= 200;
+    return $self->_decode( $self->_api_query(
+        'mytrades', marketid => $market_id, limit => $limit,
+    ));
+}
+
+sub allmytrades {
+    my $self = shift;
+    return $self->_decode( $self->_api_query('allmytrades') );
+}
+
+sub myorders {
+    my ( $self, $market_id ) = @_;
+    return $self->_decode( $self->_api_query(
+        'myorders', marketid => $market_id,
+    ));
+}
+
+sub depth {
+    my ( $self, $market_id ) = @_;
+    return $self->_decode( $self->_api_query(
+        'depth', marketid => $market_id,
+    ));
+}
+
+sub allmyorders {
+    my $self = shift;
+    return $self->_decode( $self->_api_query('allmyorders') );
+}
+
+sub createorder {
+    my ( $self, $market_id, $order_type, $quantity, $price ) = @_;
+    return $self->_decode( $self->_api_query(
+        'createorder',
+        marketid    => $market_id,
+        ordertype   => $order_type,
+        quantity    => $quantity,
+        price       => $price,
+    ));
+}
+
+sub cancelorder {
+    my ( $self, $order_id ) = @_;
+    return $self->_decode( $self->_api_query(
+        'cancelorder', orderid => $order_id,
+    ));
+}
+
+sub cancelmarketorders {
+    my ( $self, $market_id ) = @_;
+    return $self->_decode( $self->_api_query(
+        'cancelmarketorders', marketid => $market_id,
+    ));
+}
+
+sub cancelallorders {
+    my $self = shift;
+    return $self->_decode( $self->_api_query('cancelallorders') );
+}
+
+sub calculatefees {
+    my ( $self, $order_type, $quantity, $price ) = @_;
+    return $self->_decode( $self->_api_query(
+        'calculatefees',
+        ordertype   => $order_type,
+        quantity    => $quantity,
+        price       => $price,
+    ));
+}
+
+sub generatenewaddress {
+    my ( $self, $currency_id, $currency_code ) = @_;
+    return $self->_decode( $self->_api_query(
+        'generatenewaddress',
+        currencyid      => $currency_id,
+        currencycode    => $currency_code,
+    ));
+}
+
+sub _decode {
+    my ( $self, $json ) = @_;
+
+    return unless $json;
+
+    $self->error( undef );
+
+    my $decoded = decode_json( $json );
+    unless ( $decoded and $decoded->{success} ) {
+        $decoded and $self->error( $decoded->{error} );
+        return;
     }
 
-    my $digest = hmac_sha512_hex(join('&', @data), $self->priv_key);
+    return $decoded->{return};
+}
+
+sub _api_query {
+    my ( $self, $method, %req ) = @_;
+
+    my %get_methods = map +( $_ => 1 ),
+        qw/marketdata  marketdatav2  singlemarketdata  orderdata
+        singleorderdata/;
 
     my $ua = LWP::UserAgent->new( timeout => 30 );
 
-    my $res = $ua->post(
-        API_URL,
-        Content => join('&', @data),
-        Key     => $self->pub_key,
-        Sign    => $digest,
-    );
+    my $res;
+    if ( $get_methods{ $method } ) {
+        my $is_need_market_id = 0;
+        $is_need_market_id = 1
+            if $method eq 'singlemarketdata'
+                or $method eq 'singleorderdata';
+
+        $res = $ua->get(
+            "http://pubapi.cryptsy.com/api.php?method=$method" .
+            ( $is_need_market_id ? '&marketid=' . $req{marketid} : '' )
+        );
+    }
+    else {
+        $req{method} = $method;
+        $req{nonce}  = time;
+        my $data = join '&', map "$_=$req{$_}", keys %req;
+        my $digest = hmac_sha512_hex( $data, $self->priv_key );
+
+        $res = $ua->post(
+            API_URL,
+            Content => $data,
+            Key     => $self->pub_key,
+            Sign    => $digest,
+        );
+    }
+
+    unless ( $res->is_success ) {
+        $self->error("Network error: " . $res->status_line );
+        return;
+    }
 
     return $res->decoded_content;
 }
