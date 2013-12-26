@@ -1,7 +1,7 @@
 package WebService::Cryptsy;
 
 use Moo;
-use WWW::Mechanize;
+use LWP::UserAgent;
 use JSON::MaybeXS;
 use Digest::SHA qw/hmac_sha512_hex/;
 use HTTP::Request;
@@ -35,7 +35,7 @@ sub api_query {
 
     my $digest = hmac_sha512_hex(join('&', @data), $self->priv_key);
 
-    my $ua = WWW::Mechanize->new( timeout => 30 );
+    my $ua = LWP::UserAgent->new( timeout => 30 );
 
     my $res = $ua->post(
         API_URL,
