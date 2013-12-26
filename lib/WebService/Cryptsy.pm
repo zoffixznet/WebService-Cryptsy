@@ -39,7 +39,7 @@ sub api_query {
 
     my $res = $ua->post(
         API_URL,
-        \%req,
+        Content => join('&', @data),
         Key     => $self->pub_key,
         Sign    => $digest,
     );

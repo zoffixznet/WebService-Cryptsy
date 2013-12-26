@@ -15,7 +15,7 @@ my $cryp = WebService::Cryptsy->new(
     priv_key => $priv_key,
 );
 
-print $cryp->getinfo;
+print $cryp->getinfo . "\n";
 
 
 
