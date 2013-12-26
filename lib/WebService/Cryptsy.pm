@@ -27,20 +27,19 @@ sub api_query {
     my ( $self, $method, %req ) = @_;
 
     $req{method} = $method;
-    $req{nonce}  = time();#$self->_nonce;
+    $req{nonce}  = $self->_nonce;
     my @data;
     for ( keys %req ) {
         push @data, $_ . '=' . $req{$_};
     }
 
-    my $digest = hmac_sha512_hex("method=getinfo&nonce=1388017668", $self->priv_key);
+    my $digest = hmac_sha512_hex(join('&', @data), $self->priv_key);
 
     my $ua = WWW::Mechanize->new( timeout => 30 );
 
     my $res = $ua->post(
         API_URL,
-        # \%req,
-        { method=>'getinfo', nonce => 1388017668 },
+        \%req,
         Key     => $self->pub_key,
         Sign    => $digest,
     );

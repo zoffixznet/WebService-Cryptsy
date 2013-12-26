@@ -9,11 +9,15 @@ use WebService::Cryptsy;
 my $pub_key = '';
 my $priv_key = '';
 
+
 my $cryp = WebService::Cryptsy->new(
     pub_key => $pub_key,
     priv_key => $priv_key,
 );
 
 print $cryp->getinfo;
+
+
+
 
 
