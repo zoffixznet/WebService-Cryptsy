@@ -2,28 +2,22 @@
 
 use strict;
 use warnings;
-use lib qw(../lib lib);
+
+# VERSION
 
 use WebService::Cryptsy;
-use Data::Dumper;
-
-
-my $pub_key = '';
-my $priv_key = '';
-
+use lib qw(lib  ../lib);
 
 my $cryp = WebService::Cryptsy->new(
-    pub_key => $pub_key,
-    priv_key => $priv_key,
+    public_key => 'YOUR PUBLIC KEY',
+    private_key => 'YOUR PRIVATE KEY',
 );
 
-print Dumper( $cryp->getinfo ) . "\n";
+my $market_data = $cryp->marketdatav2
+    or die "Error fetching data: " . $cryp->error;
 
-print Dumper( $cryp->marketdata ) . "\n";
+my $markets = $market_data->{markets};
 
-
-
-
-
-
+printf "%s: %f\n", @{ $markets->{$_} }{qw/label  lasttradeprice/}
+    for sort keys %$markets;
 
