@@ -1,5 +1,9 @@
 Revision history for WebService-Cryptsy
 
+1.008004   2014-10-05
+        - Fixed failing tests (Cryptsy made small updates to what some
+          API calls return and the tests weren't expecting that data)
+
 1.008003   2014-02-04
         - Had to explicitly specify newer Moo in prereqs
 

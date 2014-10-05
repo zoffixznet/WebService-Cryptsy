@@ -28,6 +28,8 @@ if ( $data ) {
         array_each(
             {
                 'current_volume' => re('^[-+.\d]+$'),
+                'current_volume_btc' => re('^[-+.\d]+$'),
+                'current_volume_usd' => re('^[-+.\d]+$'),
                 'marketid' => re('^\d+$'),
                 'created' => re('.'),
                 'high_trade' => re('^[-+.\d]+$'),

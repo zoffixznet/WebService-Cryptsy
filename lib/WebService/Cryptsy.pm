@@ -256,6 +256,14 @@ WebService::Cryptsy - implementation of www.cryptsy.com API
     printf "%s: %f\n", @{ $data->{markets}{$_} }{qw/label  lasttradeprice/}
         for sort keys %{ $data->{markets} };
 
+=head1 MAINTENANCE NOTE
+
+B<NOTE: this module has not been keeping up with Cryptsy's API updates
+since Feb 4, 2014. Reason being is that I don't personally use this
+module and the person I wrote it for might not be using it any more
+either. But if you do use this module and need it updated, just
+submit a bug report (patches are also welcome!).>
+
 =head1 DESCRIPTION
 
 This module implements the L<www.cryptsy.com API|https://www.cryptsy.com/pages/api> whose description is available here:
@@ -375,6 +383,11 @@ These methods do not require API keys.
     my $data = $cryp->marketdata
         or die "Error: $cryp";
 
+B<NOTE: this API call doesn't seem to be listed on Cryptsy's site
+any more. You're likely supposed to use marketdatav2 instead.>
+
+B<NOTE: sometimes this call takes forever to complete.>
+
 I<General Market Data (All Markets): (OLD METHOD)>. B<Takes> no arguments. B<On failure> returns C<undef> or an empty list,
 depending on the context, and sets C<< ->error >> to the error message.
 On success returns a data structure that looks something like this:
@@ -422,6 +435,8 @@ On success returns a data structure that looks something like this:
 
     my $data = $cryp->marketdatav2
         or die "Error: $cryp";
+
+B<NOTE: sometimes this call takes forever to complete.>
 
 I<General Market Data (All Markets): (NEW METHOD)>. B<Takes> no arguments.
 B<On failure> returns C<undef> or an empty list,

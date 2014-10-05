@@ -42,6 +42,7 @@ if ( $data ) {
             'balances_hold' => hash_each(
                 re('^[-+.\d]+$'),
             ),
+            'balances_available_btc' => re('.'),
         }),
         '->getinfo returned an expected arrayref'
     );

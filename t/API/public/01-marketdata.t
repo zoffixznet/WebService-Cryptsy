@@ -10,9 +10,8 @@ plan tests => 1;
 use WebService::Cryptsy;
 
 my $cryp = WebService::Cryptsy->new( timeout => 10 );
-
+diag "This test fetches quite a bit of data, so it may take some time to complete.";
 my $data = $cryp->marketdata;
-
 if ( $data ) {
     cmp_deeply(
         $data,
@@ -56,6 +55,7 @@ if ( $data ) {
                                 'total' => re('^[-+.\d]+$'),
                                 'id' => re('.'),
                                 'time' => re('.'),
+                                'type' => re('.'),
                             },
                         ),
                         undef,
