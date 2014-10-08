@@ -223,7 +223,7 @@ __END__
 
 =encoding utf8
 
-=for stopwords EST Orderbook buyorders com cryptsy sellorders tradeprice www www.cryptsy.com www.cryptsy.com.
+=for stopwords EST Orderbook buyorders com cryptsy sellorders tradeprice www www.cryptsy.com www.cryptsy.com. marketdatav marketdatav2
 
 =head1 NAME
 
@@ -248,7 +248,7 @@ WebService::Cryptsy - implementation of www.cryptsy.com API
         or die "Error: " . $cryp->error;
 
 
-    my $cryp = WebService::Cryptsy->new; # no need for keys for some methods
+    $cryp = WebService::Cryptsy->new; # no need for keys for some methods
     my $data = $cryp->marketdatav2
         or die "Error: $cryp";  # error checking and using interpolation
                                 # to get the error message
