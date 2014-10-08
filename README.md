@@ -21,7 +21,6 @@ WebService::Cryptsy - implementation of www.cryptsy.com API
         or die "Error: " . $cryp->error;
 
 
-
     my $cryp = WebService::Cryptsy->new; # no need for keys for some methods
     my $data = $cryp->marketdatav2
         or die "Error: $cryp";  # error checking and using interpolation
@@ -29,6 +28,14 @@ WebService::Cryptsy - implementation of www.cryptsy.com API
 
     printf "%s: %f\n", @{ $data->{markets}{$_} }{qw/label  lasttradeprice/}
         for sort keys %{ $data->{markets} };
+
+# MAINTENANCE NOTE
+
+__NOTE: this module has not been keeping up with Cryptsy's API updates
+since Feb 4, 2014. Reason being is that I don't personally use this
+module and the person I wrote it for might not be using it any more
+either. But if you do use this module and need it updated, just
+submit a bug report (patches are also welcome!).__
 
 # DESCRIPTION
 
@@ -114,7 +121,6 @@ __Default:__ `60`
         or die "Error: $cryp";
 
 
-
     my $data = $cryp->marketdata
         or die "Error: " . $cryp->error;
 
@@ -149,6 +155,11 @@ These methods do not require API keys.
 
     my $data = $cryp->marketdata
         or die "Error: $cryp";
+
+__NOTE: this API call doesn't seem to be listed on Cryptsy's site
+any more. You're likely supposed to use marketdatav2 instead.__
+
+__NOTE: sometimes this call takes forever to complete.__
 
 _General Market Data (All Markets): (OLD METHOD)_. __Takes__ no arguments. __On failure__ returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
@@ -197,6 +208,8 @@ On success returns a data structure that looks something like this:
 
     my $data = $cryp->marketdatav2
         or die "Error: $cryp";
+
+__NOTE: sometimes this call takes forever to complete.__
 
 _General Market Data (All Markets): (NEW METHOD)_. __Takes__ no arguments.
 __On failure__ returns `undef` or an empty list,

@@ -10,63 +10,69 @@ plan tests => 1;
 use WebService::Cryptsy;
 
 my $cryp = WebService::Cryptsy->new( timeout => 10 );
-diag "This test fetches quite a bit of data, so it may take some time to complete.";
-my $data = $cryp->marketdata;
-if ( $data ) {
-    cmp_deeply(
-        $data,
-        {
-            markets => hash_each(
-                {
-                    'primaryname' => re('.'),
-                    'volume' => re('^[-+.\d]+$'),
-                    'lasttradeprice' => re('^[-+.\d]+$'),
-                    'marketid' => re('^\d+$'),
-                    'secondarycode' => re('.'),
-                    'primarycode' => re('.'),
-                    'lasttradetime' => re('.'),
-                    'label' => re('.'),
-                    'secondaryname' => re('.'),
-                    'buyorders' => any(
-                        array_each(
-                            {
-                                'quantity' => re('^[-+.\d]+$'),
-                                'price' => re('^[-+.\d]+$'),
-                                'total' => re('^[-+.\d]+$'),
-                            },
+SKIP: {
+    skip 'This test is currently disabled because it takes a lot'
+        . ' of time to complete and fetches a lot of data.',
+        1;
+
+    diag "This test fetches quite a bit of data, so it may take some time to complete.";
+    my $data = $cryp->marketdata;
+    if ( $data ) {
+        cmp_deeply(
+            $data,
+            {
+                markets => hash_each(
+                    {
+                        'primaryname' => re('.'),
+                        'volume' => re('^[-+.\d]+$'),
+                        'lasttradeprice' => re('^[-+.\d]+$'),
+                        'marketid' => re('^\d+$'),
+                        'secondarycode' => re('.'),
+                        'primarycode' => re('.'),
+                        'lasttradetime' => re('.'),
+                        'label' => re('.'),
+                        'secondaryname' => re('.'),
+                        'buyorders' => any(
+                            array_each(
+                                {
+                                    'quantity' => re('^[-+.\d]+$'),
+                                    'price' => re('^[-+.\d]+$'),
+                                    'total' => re('^[-+.\d]+$'),
+                                },
+                            ),
+                            undef,
                         ),
-                        undef,
-                    ),
-                    'sellorders' => any(
-                        array_each(
-                            {
-                                'quantity' => re('^[-+.\d]+$'),
-                                'price' => re('^[-+.\d]+$'),
-                                'total' => re('^[-+.\d]+$'),
-                            },
+                        'sellorders' => any(
+                            array_each(
+                                {
+                                    'quantity' => re('^[-+.\d]+$'),
+                                    'price' => re('^[-+.\d]+$'),
+                                    'total' => re('^[-+.\d]+$'),
+                                },
+                            ),
+                            undef,
                         ),
-                        undef,
-                    ),
-                    'recenttrades' => any(
-                        array_each(
-                            {
-                                'quantity' => re('^[-+.\d]+$'),
-                                'price' => re('^[-+.\d]+$'),
-                                'total' => re('^[-+.\d]+$'),
-                                'id' => re('.'),
-                                'time' => re('.'),
-                                'type' => re('.'),
-                            },
+                        'recenttrades' => any(
+                            array_each(
+                                {
+                                    'quantity' => re('^[-+.\d]+$'),
+                                    'price' => re('^[-+.\d]+$'),
+                                    'total' => re('^[-+.\d]+$'),
+                                    'id' => re('.'),
+                                    'time' => re('.'),
+                                    'type' => re('.'),
+                                },
+                            ),
+                            undef,
                         ),
-                        undef,
-                    ),
-                }
-            ),
-        },
-        '->marketdata returned an expected hashref'
-    );
-}
-else {
-    diag "Got an error getting an API request: $cryp";
-    ok( length $cryp->error );
+                    }
+                ),
+            },
+            '->marketdata returned an expected hashref'
+        );
+    }
+    else {
+        diag "Got an error getting an API request: $cryp";
+        ok( length $cryp->error );
+    }
 }

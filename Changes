@@ -1,5 +1,11 @@
 Revision history for WebService-Cryptsy
 
+1.008005   2014-10-08
+        - Disabled t/API/public/01-marketdata.t and 02-marketdatav2.t
+            tests, as they recently started pulling in a ton of data
+            that causes problems with smokers and makes the tests
+            take forever to complete.
+
 1.008004   2014-10-05
         - Fixed failing tests (Cryptsy made small updates to what some
           API calls return and the tests weren't expecting that data)
