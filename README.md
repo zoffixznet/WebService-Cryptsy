@@ -21,7 +21,7 @@ WebService::Cryptsy - implementation of www.cryptsy.com API
         or die "Error: " . $cryp->error;
 
 
-    my $cryp = WebService::Cryptsy->new; # no need for keys for some methods
+    $cryp = WebService::Cryptsy->new; # no need for keys for some methods
     my $data = $cryp->marketdatav2
         or die "Error: $cryp";  # error checking and using interpolation
                                 # to get the error message
@@ -31,11 +31,11 @@ WebService::Cryptsy - implementation of www.cryptsy.com API
 
 # MAINTENANCE NOTE
 
-__NOTE: this module has not been keeping up with Cryptsy's API updates
+**NOTE: this module has not been keeping up with Cryptsy's API updates
 since Feb 4, 2014. Reason being is that I don't personally use this
 module and the person I wrote it for might not be using it any more
 either. But if you do use this module and need it updated, just
-submit a bug report (patches are also welcome!).__
+submit a bug report (patches are also welcome!).**
 
 # DESCRIPTION
 
@@ -59,9 +59,9 @@ go to [account settings page](https://www.cryptsy.com/users/settings)
 and scroll all the way to the bottom. Click the _Generate New Key_ button
 to generate new key.
 
-__IMPORTANT!!! Ensure to toggle the "API Disabled"
+**IMPORTANT!!! Ensure to toggle the "API Disabled"
 button into the "on" position, otherwise your API will be off and this
-module will give a confusing error message.__
+module will give a confusing error message.**
 
 # CONSTRUCTOR
 
@@ -76,7 +76,7 @@ module will give a confusing error message.__
     # or if you're only going to use the public methods:
     my $cryp = WebService::Cryptsy->new;
 
-Creates and returns a new `WebService::Cryptsy` object. __Takes__
+Creates and returns a new `WebService::Cryptsy` object. **Takes**
 three optional arguments as key/value pairs. The
 `public_key` and `private_key` are optional only for the
 _Public Methods_ of the API. They both are required for calling the
@@ -109,8 +109,8 @@ This is the key from the _Private Key_ box on
         timeout => 30,
     );
 
-__Optional__. Specifies the timeout, in seconds, of the API requests.
-__Default:__ `60`
+**Optional**. Specifies the timeout, in seconds, of the API requests.
+**Default:** `60`
 
 # MODULE METHODS / OVERLOADS
 
@@ -136,8 +136,8 @@ to get the error message.
 
     $cryp->timeout( 30 );
 
-Gets/sets the `timeout` constructor's argument. __Takes__ one optional
-argument that specifies the new timeout in seconds. __Returns__ the
+Gets/sets the `timeout` constructor's argument. **Takes** one optional
+argument that specifies the new timeout in seconds. **Returns** the
 current timeout in seconds.
 
 # GENERAL CONVENTION FOR API METHODS
@@ -156,12 +156,12 @@ These methods do not require API keys.
     my $data = $cryp->marketdata
         or die "Error: $cryp";
 
-__NOTE: this API call doesn't seem to be listed on Cryptsy's site
-any more. You're likely supposed to use marketdatav2 instead.__
+**NOTE: this API call doesn't seem to be listed on Cryptsy's site
+any more. You're likely supposed to use marketdatav2 instead.**
 
-__NOTE: sometimes this call takes forever to complete.__
+**NOTE: sometimes this call takes forever to complete.**
 
-_General Market Data (All Markets): (OLD METHOD)_. __Takes__ no arguments. __On failure__ returns `undef` or an empty list,
+_General Market Data (All Markets): (OLD METHOD)_. **Takes** no arguments. **On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
 On success returns a data structure that looks something like this:
 
@@ -209,10 +209,10 @@ On success returns a data structure that looks something like this:
     my $data = $cryp->marketdatav2
         or die "Error: $cryp";
 
-__NOTE: sometimes this call takes forever to complete.__
+**NOTE: sometimes this call takes forever to complete.**
 
-_General Market Data (All Markets): (NEW METHOD)_. __Takes__ no arguments.
-__On failure__ returns `undef` or an empty list,
+_General Market Data (All Markets): (NEW METHOD)_. **Takes** no arguments.
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
 On success returns a data structure that looks something like this:
 
@@ -262,8 +262,8 @@ On success returns a data structure that looks something like this:
         or die "Error: $cryp";
 
 _General Market Data (Single Market)_.
-__Takes__ one __mandatory__ argument, which is the market ID.
-__On failure__ returns `undef` or an empty list,
+**Takes** one **mandatory** argument, which is the market ID.
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
 On success returns a data structure that looks something like this:
 
@@ -312,8 +312,8 @@ On success returns a data structure that looks something like this:
         or die "Error: $cryp";
 
 _General Orderbook Data (All Markets)_.
-__Takes__ no arguments.
-__On failure__ returns `undef` or an empty list,
+**Takes** no arguments.
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
 On success returns a data structure that looks something like this:
 
@@ -349,8 +349,8 @@ On success returns a data structure that looks something like this:
         or die "Error: $cryp";
 
 _General Orderbook Data (Single Market)_.
-__Takes__ one __mandatory__ argument, which is the market ID.
-__On failure__ returns `undef` or an empty list,
+**Takes** one **mandatory** argument, which is the market ID.
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
 On success returns a data structure that looks something like this:
 
@@ -386,8 +386,8 @@ On success returns a data structure that looks something like this:
     my $data = $cryp->getinfo
         or die "Error: $cryp";
 
-__Takes__ no arguments.
-__On failure__ returns `undef` or an empty list,
+**Takes** no arguments.
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
 On success returns a data structure that looks something like this:
 
@@ -424,8 +424,8 @@ hold for open orders
         or die "Error: $cryp";
 
 _Outputs: Array of Active Markets_.
-__Takes__ no arguments.
-__On failure__ returns `undef` or an empty list,
+**Takes** no arguments.
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
 On success returns a data structure that looks something like this:
 
@@ -470,13 +470,13 @@ for example: `AMC`
         or die "Error: $cryp";
 
 _Outputs: Array of Deposits and Withdrawals on your account_.
-__Takes__ no arguments.
-__On failure__ returns `undef` or an empty list,
+**Takes** no arguments.
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
-__On success__ returns a data structure.
-__Since I don't actually use Cryptsy, I've no transactions and can't
+**On success** returns a data structure.
+**Since I don't actually use Cryptsy, I've no transactions and can't
 see what structure the method returns. If you can, please dump it and
-submit it as a bug report.__
+submit it as a bug report.**
 My best guess is it returns an arrayref of hashrefs, and
 according to [Cryptsy's API](https://www.cryptsy.com/pages/api),
 the meaning of the keys in each hashref is:
@@ -501,8 +501,8 @@ or Withdrawal was sent
 
 _Outputs: Array of last 1000 Trades for this Market,
 in Date Descending Order_.
-__Takes__ one __mandatory__ argument, which is the market ID.
-__On failure__ returns `undef` or an empty list,
+**Takes** one **mandatory** argument, which is the market ID.
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
 On success returns a data structure that looks something like this:
 
@@ -535,8 +535,8 @@ the meaning of the keys in each hashref is:
 
 _Outputs: 2 Arrays. First array is sellorders
 listing current open sell orders ordered price ascending. Second array is buyorders listing current open buy orders ordered price descending._
-__Takes__ one __mandatory__ argument, which is the market ID.
-__On failure__ returns `undef` or an empty list,
+**Takes** one **mandatory** argument, which is the market ID.
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
 On success returns a data structure that looks something like this:
 
@@ -573,15 +573,15 @@ the meaning of the keys in each hashref is:
         or die "Error: $cryp";
 
 _Outputs: Array your Trades for this Market, in Date Descending Order._
-__Takes__ one __mandatory__ argument, which is the market ID, and
-one __optional__ argument, which is the limit of the number of results
-(__defaults to__ `200`).
-__On failure__ returns `undef` or an empty list,
+**Takes** one **mandatory** argument, which is the market ID, and
+one **optional** argument, which is the limit of the number of results
+(**defaults to** `200`).
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
 On success returns a data structure.
-__Since I don't actually use Cryptsy, I've no transactions and can't
+**Since I don't actually use Cryptsy, I've no transactions and can't
 see what structure the method returns. If you can, please dump it and
-submit it as a bug report.__
+submit it as a bug report.**
 My best guess is it returns an arrayref of hashrefs, and
 according to [Cryptsy's API](https://www.cryptsy.com/pages/api),
 the meaning of the keys in each hashref is:
@@ -603,13 +603,13 @@ Does not include fees
         or die "Error: $cryp";
 
 _Outputs: Array your Trades for all Markets, in Date Descending Order_.
-__Takes__ no arguments.
-__On failure__ returns `undef` or an empty list,
+**Takes** no arguments.
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
-__On success__ returns a data structure.
-__Since I don't actually use Cryptsy, I've no transactions and can't
+**On success** returns a data structure.
+**Since I don't actually use Cryptsy, I've no transactions and can't
 see what structure the method returns. If you can, please dump it and
-submit it as a bug report.__
+submit it as a bug report.**
 My best guess is it returns an arrayref of hashrefs, and
 according to [Cryptsy's API](https://www.cryptsy.com/pages/api),
 the meaning of the keys in each hashref is:
@@ -634,13 +634,13 @@ Does not include fees
 
 _Outputs: Array of your orders for this market
 listing your current open sell and buy orders._
-__Takes__ one __mandatory__ argument, which is the market ID.
-__On failure__ returns `undef` or an empty list,
+**Takes** one **mandatory** argument, which is the market ID.
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
-__On success__ returns a data structure.
-__Since I don't actually use Cryptsy, I've no transactions and can't
+**On success** returns a data structure.
+**Since I don't actually use Cryptsy, I've no transactions and can't
 see what structure the method returns. If you can, please dump it and
-submit it as a bug report.__
+submit it as a bug report.**
 My best guess is it returns an arrayref of hashrefs, and
 according to [Cryptsy's API](https://www.cryptsy.com/pages/api),
 the meaning of the keys in each hashref is:
@@ -661,8 +661,8 @@ the meaning of the keys in each hashref is:
 
 _Outputs: Array of buy and sell orders on the market
 representing market depth._
-__Takes__ one __mandatory__ argument, which is the market ID.
-__On failure__ returns `undef` or an empty list,
+**Takes** one **mandatory** argument, which is the market ID.
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
 On success returns a data structure that looks something like this:
 
@@ -687,13 +687,13 @@ On success returns a data structure that looks something like this:
         or die "Error: $cryp";
 
 _Outputs: Array of all open orders for your account._
-__Takes__ no arguments.
-__On failure__ returns `undef` or an empty list,
+**Takes** no arguments.
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
-__On success__ returns a data structure.
-__Since I don't actually use Cryptsy, I've no transactions and can't
+**On success** returns a data structure.
+**Since I don't actually use Cryptsy, I've no transactions and can't
 see what structure the method returns. If you can, please dump it and
-submit it as a bug report.__
+submit it as a bug report.**
 My best guess is it returns an arrayref of hashrefs, and
 according to [Cryptsy's API](https://www.cryptsy.com/pages/api),
 the meaning of the keys in each hashref is:
@@ -716,22 +716,22 @@ the meaning of the keys in each hashref is:
         $price,      # Price per unit you are buying/selling at
     ) or die "Error: $cryp";
 
-__Takes__ four mandatory arguments that are (in order):
+**Takes** four mandatory arguments that are (in order):
 market id, order type (Buy or Sell), quantity, price.
-__On failure__ returns `undef` or an empty list,
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
-__On success__ returns the order ID.
+**On success** returns the order ID.
 
 ## `cancelorder`
 
     $cryp->cancelorder( $order_id )
         or die "Error: $cryp";
 
-__Takes__ one __mandatory__ argument, which is the order ID of the order
+**Takes** one **mandatory** argument, which is the order ID of the order
 you wish to cancel.
-__On failure__ returns `undef` or an empty list,
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
-__On success__ returns a true value.
+**On success** returns a true value.
 
 ## `cancelmarketorders`
 
@@ -740,14 +740,14 @@ __On success__ returns a true value.
         or die "Error: $cryp";
 
 _Cancel all open orders in the market._
-__Takes__ one __mandatory__ argument, which is the market ID.
-__On failure__ returns `undef` or an empty list,
+**Takes** one **mandatory** argument, which is the market ID.
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
 According to the API docs, on success returns an arrayref that
 contains _"return information on each order cancelled."_
-__I don't have the means to create/cancel orders; if you can dump
+**I don't have the means to create/cancel orders; if you can dump
 the returned data structure and submit it to me via a bug report,
-it would be appreciated.__ It is likely the return is a hashref with
+it would be appreciated.** It is likely the return is a hashref with
 a single key `return` whose value is an arrayref.
 
 ## `cancelallorders`
@@ -756,14 +756,14 @@ a single key `return` whose value is an arrayref.
         or die "Error: $cryp";
 
 _Outputs: Array of all open orders for your account._
-__Takes__ no arguments.
-__On failure__ returns `undef` or an empty list,
+**Takes** no arguments.
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
 According to the API docs, on success returns an arrayref that
 contains _"return information on each order cancelled."_
-__I don't have the means to create/cancel orders; if you can dump
+**I don't have the means to create/cancel orders; if you can dump
 the returned data structure and submit it to me via a bug report,
-it would be appreciated.__ It is likely the return is a hashref with
+it would be appreciated.** It is likely the return is a hashref with
 a single key `return` whose value is an arrayref.
 
 ## `calculatefees`
@@ -774,9 +774,9 @@ a single key `return` whose value is an arrayref.
         $price,      # Price per unit you are buying/selling at
     ) or die "Error: $cryp";
 
-__Takes__ three mandatory arguments that are (in order):
+**Takes** three mandatory arguments that are (in order):
 order type (Buy or Sell), quantity, price.
-__On failure__ returns `undef` or an empty list,
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
 On success returns a data structure that looks like this:
 
@@ -806,11 +806,11 @@ the meaning of the keys in the hashref is:
     my $address = $cryp->generatenewaddress( undef, 'BTC' )
         or die "Error: $cryp";
 
-__Takes__ two optional arguments, but at least one of them must be provided.
+**Takes** two optional arguments, but at least one of them must be provided.
 The first argument is the currency ID, the second is the currency code.
 If you're providing the currency code but wish not to provide the
 currency ID, then provide currency ID as `undef`.
-__On failure__ returns `undef` or an empty list,
+**On failure** returns `undef` or an empty list,
 depending on the context, and sets `->error` to the error message.
 On success returns a data structure that looks something like this:
 
