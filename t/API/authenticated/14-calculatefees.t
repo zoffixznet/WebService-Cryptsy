@@ -32,6 +32,7 @@ if ( $data ) {
         {
             'fee' => re('^[-+.\d]+$'),
             'net' => re('^[-+.\d]+$'),
+            'discount' => re('^[-+.\d]+$'),
         },
         '->calculatefees returned an expected hashref'
     );
