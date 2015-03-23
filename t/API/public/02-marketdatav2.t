@@ -11,11 +11,12 @@ use WebService::Cryptsy;
 
 my $cryp = WebService::Cryptsy->new( timeout => 10 );
 SKIP: {
-    skip 'This test is currently disabled because it takes a lot'
-        . ' of time to complete and fetches a lot of data.',
-        1;
+    skip 'This test takes a lot of time to complete and fetches a'
+            . ' lot of data. SKIPPING because NONINTERACTIVE_TESTING=1',
+        1 if $ENV{NONINTERACTIVE_TESTING};
 
-    diag "This test fetches quite a bit of data, so it may take some time to complete.";
+    diag 'This test fetches quite a bit of data, so it may take some'
+        . ' time to complete and might fail if that data fetching fails';
 
     my $data = $cryp->marketdatav2;
     if ( $data ) {
