@@ -13,13 +13,15 @@ my $cryp = WebService::Cryptsy->new( timeout => 10 );
 SKIP: {
     skip 'This test takes a lot of time to complete and fetches a'
             . ' lot of data. SKIPPING because NONINTERACTIVE_TESTING=1',
-        1 if $ENV{NONINTERACTIVE_TESTING};
+        1 if $ENV{NONINTERACTIVE_TESTING}
+            or $ENV{AUTOMATED_TESTING};
 
     diag 'This test fetches quite a bit of data, so it may take some'
         . ' time to complete and might fail if that data fetching fails';
 
     my $data = $cryp->marketdatav2;
     if ( $data ) {
+        no warnings 'uninitialized';
         cmp_deeply(
             $data,
             {
@@ -29,11 +31,17 @@ SKIP: {
                         'secondaryname' => re('.'),
                         'label' => re('.'),
                         'volume' => re('^[-+.\d]+$'),
-                        'lasttradeprice' => re('^[-+.\d]+$'),
+                        'lasttradeprice' => any(
+                            re('^[-+.\d]+$'),
+                            undef,
+                        ),
                         'marketid' => re('^\d+$'),
                         'primarycode' => re('.'),
                         'secondarycode' => re('.'),
-                        'lasttradetime' => re('.'),
+                        'lasttradetime' => any(
+                            re('.'),
+                            undef,
+                        ),
                         'sellorders' => any(
                             array_each(
                                 {
